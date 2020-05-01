@@ -15,12 +15,12 @@ Sytax for function as follows:
     psych(P,intype0,invalue0,intype1,invalue1,outtype,unittype)  
  
  Example:
- 
-``python
-from psychropy import psych    
+ get enthalpy at 1 atm, 72.1 F dry bulb, 70% humidity in ~~imperial~~ freedom units
+```python
+from psychropy import psych
 psych(14.7,'Tdb',72.1,'RH',.7,'h')
-30.19351939930006
-``
+>>>30.19351939930006
+```
  
  Defs:  
  
