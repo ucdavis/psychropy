@@ -15,15 +15,16 @@ def test_rh():
     psych(air_pressure,'Tdb',Tdb,'DP',Tdp,'RH','Imp')
 
 if __name__ == '__main__':
+    number_of_tests=100
 
-    secs=timeit.timeit("test_twb()", setup="from __main__ import test_twb",number=100)
+    secs=timeit.timeit("test_twb()", setup="from __main__ import test_twb",number=number_of_tests)/number_of_tests
     print("100 tests getting wet bulb from a dataframe 8760 rows long took an average of {} seconds:".format(secs))
 
     Twb_test = psych(air_pressure,'Tdb',Tdb,'DP',Tdp,'Twb','Imp')
-    max_error = (Twb-Twb_test).max()
+    max_error = abs(Twb-Twb_test).max()
     print("Max difference between test data Wet Bulb and psych is {} degrees".format(max_error))
 
-    secs = timeit.timeit("test_rh()", setup="from __main__ import test_rh", number=100)
+    secs = timeit.timeit("test_rh()", setup="from __main__ import test_rh", number=number_of_tests)/number_of_tests
     print("100 tests getting RH from a dataframe 8760 rows long took an average of {} seconds:".format(secs))
 
 
