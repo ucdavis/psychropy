@@ -24,7 +24,7 @@ psych(14.7,'Tdb',72.1,'RH',.7,'h')
 
 **_Inputs can also be pandas dataframes, pandas series, or numpy arrays._**
  
- Defs:  
+ ###Defs:  
  
 
  - **P** is the barometric pressure in PSI or Pa . 
@@ -40,15 +40,15 @@ Imp is    default if omitted.    valid intypes:
 - **W**      Humidity Ratio           Mass Water/ Mass    Dry    Air     Valid for input     
 - **h**      Enthalpy                    BTU/lb dry    air or kJ/kg DA   Valid for input *Warning 0 state    for Imp is ~0F,    0% RH ,and  1 ATM, 0 state for SI is 0C, 0%RH and    1 ATM*
 
-## valid outtypes:
+### valid outtypes:
 
- - Tdb    Dry Bulb Temp            F or C
- - Twb    Web Bulb Temp            F or C                       Valid for Input 
- - DP     Dew point                F or C                       Valid for input 
- - RH     Relative Humidity        between 0 and 1              Valid for input 
- - W      Humidity Ratio           Mass Water/ Mass Dry Air     Valid for input 
- - h      Enthalpy                 BTU/lb dry air or kJ/kg DA   Valid for input Warning 0 state for Imp is ~0F, 0% RH ,and  1 ATM, 0 state for SI is 0C, 0%RH and 1 ATM 
- - WVP    Water Vapor Pressure     PSI or Pa 
- - Dsat   Degree of Saturation     between 0 and 1 s      NOT VALID, Should be entropy 
- - SV     Specific Volume          ft^3/lbm or m^3/kg dry air 
- - MAD    Moist Air Density        lb/ft^3 or m^3/kg  
+ - **Tdb**    Dry Bulb Temp            F or C
+ - **Twb**    Web Bulb Temp            F or C                       Valid for Input 
+ - **DP**     Dew point                F or C                       Valid for input 
+ - **RH**     Relative Humidity        between 0 and 1              Valid for input 
+ - **W**      Humidity Ratio           Mass Water/ Mass Dry Air     Valid for input 
+ - **h**      Enthalpy                 BTU/lb dry air or kJ/kg DA   Valid for input Warning 0 state for Imp is ~0F, 0% RH ,and  1 ATM, 0 state for SI is 0C, 0%RH and 1 ATM 
+ - **WVP**    Water Vapor Pressure     PSI or Pa 
+ - **Dsat**   Degree of Saturation     between 0 and 1 s      NOT VALID, Should be entropy 
+ - **SV**     Specific Volume          ft^3/lbm or m^3/kg dry air 
+ - **MAD**    Moist Air Density        lb/ft^3 or m^3/kg  
