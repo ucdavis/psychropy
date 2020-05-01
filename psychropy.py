@@ -323,6 +323,7 @@ def Dew_point(P, W):
     Tdp2 = 6.09 + 12.608 * alpha + 0.4959 * alpha ** 2
 
     if isinstance(Tdp1, (DataFrame, Series,np.ndarray)) and isinstance(Tdp2, (DataFrame, Series,np.ndarray)):
+        # TODO: This is wrong. Gotta check by index, not all.
         if Tdp1.all() >= 0:
             result = Tdp1
         else:
