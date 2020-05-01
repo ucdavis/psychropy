@@ -24,7 +24,7 @@ psych(14.7,'Tdb',72.1,'RH',.7,'h')
 
 **_Inputs can also be pandas dataframes, pandas series, or numpy arrays._**
  
- ###Defs:  
+ ### Defs:  
  
 
  - **P** is the barometric pressure in PSI or Pa . 
