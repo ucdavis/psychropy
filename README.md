@@ -13,7 +13,16 @@ The function requires input of: barometric pressure, and two other parameters, W
 Sytax for function as follows:  
 
     psych(P,intype0,invalue0,intype1,invalue1,outtype,unittype)  
- Where:  
+ 
+ Example:
+ 
+``python
+from psychropy import psych    
+psych(14.7,'Tdb',72.1,'RH',.7,'h')
+30.19351939930006
+``
+ 
+ Defs:  
  
 
  - **P** is the barometric pressure in PSI or Pa . 
