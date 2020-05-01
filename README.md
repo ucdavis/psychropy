@@ -24,31 +24,37 @@ psych(14.7,'Tdb',72.1,'RH',.7,'h')
 
 **_Inputs can also be pandas dataframes, pandas series, or numpy arrays._**
  
- ### Defs:  
+ ### Available Inputs and Outputs
+ | Parameter | Descriptions | Units| Data Type|
+ |---------|--------------|------|----------|
+ |**P** | Barometric Pressure | PSI or Pa| Float, numpy arrays, pandas DataFrame or Series |
+ |**intype**| Indicator string for the corresponding values (i.e. invalue)| - | String|
+ |**invalue**| Value for the corresponding indicator string | - | String|
+ |**outtype**| Indicator string for the desired output| - | String|
+ |**unittype**| Option unit selector, default is Imp. Imp for imperial and SI for standard. | - | String|
+ 
+ #### Valid intypes
+ |In Type | Description | Units| Notes | 
+ |---------|--------------|:------:|--------|
+ |**Tdb**| Dry Bulb Temperature | F or C | Required unless inputs are enthalpy and humidity ratio| 
+ |**Twb**| Wet Bulb Temperature | F or C | -|
+ |**DP**| Dew Point Temperature | F or C | -|
+ |**RH**| Relative Humidity | - | Must fall between 0.0 - 1.0|
+ |**W**| Humidity Ratio | Mass Water / Mass Dry Air | -|
+ |**h**| Enthalpy | BTU / lb dry air or kJ / kg dry air|*Warning h = 0 state different for Imperial and SI.* <br>Imperial: ~0F, 0% RH , and 1 atm. <br>SI: 0C, 0%RH and 1 ATM |
+  
+#### valid outtypes:
+|Out Type | Description | Units| Notes | 
+ |---------|--------------|:------:|--------|
+ |**Tdb**| Dry Bulb Temperature | F or C | Requires inputs to be enthalpy and humidity ratio| 
+ |**Twb**| Wet Bulb Temperature | F or C | -|
+ |**DP**| Dew Point Temperature | F or C | -|
+ |**RH**| Relative Humidity | - | Must fall between 0.0 - 1.0|
+ |**W**| Humidity Ratio | Mass Water / Mass Dry Air | -|
+ |**h**| Enthalpy | BTU / lb dry air or kJ / kg dry air|*Warning h = 0 state different for Imperial and SI.* <br>Imperial: ~0F, 0% RH , and 1 atm. <br>SI: 0C, 0%RH and 1 ATM |
+ |**WVP**| Water Vapor Pressure  | PSI or Pa|-|
+ |**Dsat**| Degree of Saturation | 0-1|-|
+ |**SV**| Specific Volume | ft^3/lbm dry air or m^3/kg dry air |-|
+ |**MAD**| Moist Air Density | lbm moist air / ft^3 or kg moist air / m^3 |-|
  
 
- - **P** is the barometric pressure in PSI or Pa . 
- - **intypes** indicator string for the corresponding invalue parameter (ie Tdb, RH etc.)
- - **invalues** is the actual value associated with the type of parameter (ie value of Wet bulb, Dew point, RH, or Humidity Ratio etc.)
- - **outType** indicator string for the corresponding invalue parameter 
-- **unittype** is the optional unit selector.  Imp for Imperial, SI for SI.
-Imp is    default if omitted.    valid intypes:
-- **Tdb** Dry Bulb Temp F or C Valid for Input *it is highly    Recommended Tdb be used    as an input (can only output/not use, if both other inputs are h and    HR)*  
-- **Twb**    Web Bulb Temp            F or C        Valid for Input    
-- **DP**     Dew point                F or C                   Valid for    input     
-- **RH**     RH                       between 0 and 1             Valid for input     
-- **W**      Humidity Ratio           Mass Water/ Mass    Dry    Air     Valid for input     
-- **h**      Enthalpy                    BTU/lb dry    air or kJ/kg DA   Valid for input *Warning 0 state    for Imp is ~0F,    0% RH ,and  1 ATM, 0 state for SI is 0C, 0%RH and    1 ATM*
-
-### valid outtypes:
-
- - **Tdb**    Dry Bulb Temp            F or C
- - **Twb**    Web Bulb Temp            F or C                       Valid for Input 
- - **DP**     Dew point                F or C                       Valid for input 
- - **RH**     Relative Humidity        between 0 and 1              Valid for input 
- - **W**      Humidity Ratio           Mass Water/ Mass Dry Air     Valid for input 
- - **h**      Enthalpy                 BTU/lb dry air or kJ/kg DA   Valid for input Warning 0 state for Imp is ~0F, 0% RH ,and  1 ATM, 0 state for SI is 0C, 0%RH and 1 ATM 
- - **WVP**    Water Vapor Pressure     PSI or Pa 
- - **Dsat**   Degree of Saturation     between 0 and 1 s      NOT VALID, Should be entropy 
- - **SV**     Specific Volume          ft^3/lbm or m^3/kg dry air 
- - **MAD**    Moist Air Density        lb/ft^3 or m^3/kg  
