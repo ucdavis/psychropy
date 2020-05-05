@@ -136,7 +136,7 @@ def Sat_press(Tdb):
 
     TK = Tdb + 273.15  # Converts from degC to degK
     #    print(isinstance(Tdb, (DataFrame, Series)))
-    if isinstance(Tdb, (DataFrame, Series,np.ndarray)):
+    if isinstance(Tdb, (DataFrame, Series, np.ndarray)):
         result = Tdb.copy() * 0
         less_zero = TK <= 273.15
         greater_zero = TK > 273.15
@@ -173,18 +173,18 @@ def Hum_rat(Tdb, Twb, P):
     Pws = Sat_press(Twb)
     Ws = 0.62198 * Pws / (P - Pws)  # Equation 23, p6.8
 
-    if isinstance(Tdb, (DataFrame, Series,np.ndarray)) and isinstance(Twb, (DataFrame, Series,np.ndarray)):
+    if isinstance(Tdb, (DataFrame, Series, np.ndarray)) and isinstance(Twb, (DataFrame, Series, np.ndarray)):
         result = Tdb.copy() * 0
         greater_zero = Tdb >= 0
         less_zero = Tdb < 0
 
         result[greater_zero] = (((2501 - 2.326 * Twb[greater_zero]) * Ws[greater_zero] - 1.006 * (
-                    Tdb[greater_zero] - Twb[greater_zero])) /
+                Tdb[greater_zero] - Twb[greater_zero])) /
                                 (2501 + 1.86 * Tdb[greater_zero] - 4.186 * Twb[greater_zero]))  # Equation 35, p6.9
 
         result[less_zero] = (
-                    ((2830 - 0.24 * Twb[less_zero]) * Ws[less_zero] - 1.006 * (Tdb[less_zero] - Twb[less_zero])) /
-                    (2830 + 1.86 * Tdb[less_zero] - 2.1 * Twb[less_zero]))  # Equation 37, p6.9
+                ((2830 - 0.24 * Twb[less_zero]) * Ws[less_zero] - 1.006 * (Tdb[less_zero] - Twb[less_zero])) /
+                (2830 + 1.86 * Tdb[less_zero] - 2.1 * Twb[less_zero]))  # Equation 37, p6.9
 
     else:
         if Tdb >= 0:  # Equation 35, p6.9
@@ -250,15 +250,15 @@ def Wet_bulb(Tdb, RH, P):
     # Hum_Rate(Tdb, Twb, P)
     W_new = Hum_rat(Tdb, result, P)
 
-    if isinstance(Tdb, (DataFrame, Series,np.ndarray)) and isinstance(RH, (DataFrame, Series,np.ndarray)):
-        if isinstance(Tdb,np.ndarray):
-            remaining_idx = np.where(Tdb!=None)[0]
-            #remaining_idx = np.ones(Tdb.shape, dtype=bool)
+    if isinstance(Tdb, (DataFrame, Series, np.ndarray)) and isinstance(RH, (DataFrame, Series, np.ndarray)):
+        if isinstance(Tdb, np.ndarray):
+            remaining_idx = np.where(Tdb != None)[0]
+            # remaining_idx = np.ones(Tdb.shape, dtype=bool)
         else:
             remaining_idx = Tdb.index
 
         result = Tdb.copy()
-        i=0
+        i = 0
         while remaining_idx.size > 0:
             if i == 8:
                 warnings.warn("Wet bulb convergence taking longer than usual. Something *might* be wrong")
@@ -268,8 +268,8 @@ def Wet_bulb(Tdb, RH, P):
             W_new[remaining_idx] = Hum_rat(Tdb[remaining_idx], result[remaining_idx], P)
 
             remaining_idx = np.where(np.abs((W_new - W_normal) / W_normal) > 0.00001)[0]
-            i+=1
-            #remaining_idx = (np.abs(W_new - W_normal) / W_normal) > 0.00001
+            i += 1
+            # remaining_idx = (np.abs(W_new - W_normal) / W_normal) > 0.00001
 
     else:
         while abs((W_new - W_normal) / W_normal) > 0.00001:
@@ -322,12 +322,18 @@ def Dew_point(P, W):
     Tdp1 = C14 + C15 * alpha + C16 * alpha ** 2 + C17 * alpha ** 3 + C18 * Pw ** 0.1984
     Tdp2 = 6.09 + 12.608 * alpha + 0.4959 * alpha ** 2
 
-    if isinstance(Tdp1, (DataFrame, Series,np.ndarray)) and isinstance(Tdp2, (DataFrame, Series,np.ndarray)):
-        # TODO: This is wrong. Gotta check by index, not all.
-        if Tdp1.all() >= 0:
-            result = Tdp1
-        else:
-            result = Tdp2
+    if isinstance(Tdp1, (DataFrame, Series, np.ndarray)) and isinstance(Tdp2, (DataFrame, Series, np.ndarray)):
+        # Make zero matrix of correct size
+        result = np.zeros(Tdp1.shape)
+
+        # Get indexes where Tdp is above freezing, then assign the answer
+        Tdp1_index = np.where(Tdp1 >= 0)
+        result[Tdp1_index] = Tdp1[Tdp1_index]
+
+        # Get indexes where Tdp is below freezing, then assign the answer
+        Tdp2_index = np.where(Tdp1 < 0)
+        result[Tdp2_index] = Tdp2[Tdp2_index]
+
     else:
         if Tdp1 >= 0:
             result = Tdp1
@@ -458,7 +464,7 @@ def psych(P, in0Type, in0Val, in1Type, in1Val, outType, unitType='Imp', index=No
                 W = (1.006 * Tdb - h) / (-(2501 + 1.86 * Tdb))
                 ' Algebra from 2005 ASHRAE Handbook - Fundamentals - SI P6.9 eqn 32'
         else:
-            print ('invalid input varilables')
+            print('invalid input varilables')
 
     # P, Tdb, and W are now availible
 
@@ -507,7 +513,6 @@ def psych(P, in0Type, in0Val, in1Type, in1Val, outType, unitType='Imp', index=No
             except Exception as exp:
                 print("Error occurred when setting index to output: {}".format(str(exp)))
 
-
     return outVal
 
 
@@ -520,7 +525,6 @@ def psyplot(pressure=14.696, t_dry_bulb_start=20, t_dry_bulb_end=110, w_start=0,
 
 def psych_chart(pressure=14.696, t_dry_bulb_start=20, t_dry_bulb_end=110, w_start=0, w_end=0.025, axis_labels=False,
                 font_size=16, use_ax=None, line_width=0.75):
-
     matplotlib.rcParams.update({'font.size': font_size})
     # initialize rh and wb structure
     if not use_ax:
@@ -532,9 +536,9 @@ def psych_chart(pressure=14.696, t_dry_bulb_start=20, t_dry_bulb_end=110, w_star
     for value in range(10, 101, 10):
         # RH lines
         temperature_range = Series(range(t_dry_bulb_start, t_dry_bulb_end + 1, 1))
-        rh_data = psych(pressure, 'Tdb', temperature_range, 'RH', value/100, 'W')
+        rh_data = psych(pressure, 'Tdb', temperature_range, 'RH', value / 100, 'W')
         px.plot(temperature_range.values, rh_data.values, c=color, linestyle='--', linewidth=line_width,
-                 label='_nolegend_')
+                label='_nolegend_')
 
         # WB lines
         temperature_range = range(value, t_dry_bulb_end + 1, 1)
@@ -542,7 +546,7 @@ def psych_chart(pressure=14.696, t_dry_bulb_start=20, t_dry_bulb_end=110, w_star
         for t_db in temperature_range:
             wet_bulb_data.append(psych(pressure, 'Tdb', t_db, 'Twb', value, 'W'))
         px.plot(temperature_range, wet_bulb_data, c=color, linestyle='--', linewidth=line_width,
-                 label='_nolegend')
+                label='_nolegend')
     px.ticklabel_format(axis='y', style='sci', scilimits=(1, 1))
     px.axis([t_dry_bulb_start, t_dry_bulb_end, w_start, w_end])
     px.yaxis.tick_right()
@@ -561,7 +565,7 @@ def main():
     outType = input("enter the output type:")
     unitType = input("enter the unit type (Imp or SI):")
     result = psych(float(P), in0Type, float(in0Val), in1Type, float(in1Val), outType, unitType)
-    print (result)
+    print(result)
 
 
 if __name__ == '__main__': main()
