@@ -29,7 +29,7 @@ psych(14.7,'Tdb',72.1,'RH',.7,'h')
  |---------|--------------|------|----------|
  |**P** | Barometric Pressure | PSI or Pa| Float, numpy arrays, pandas DataFrame or Series |
  |**intype**| Indicator string for the corresponding values (i.e. invalue)| - | String|
- |**invalue**| Value for the corresponding indicator string | - | String|
+ |**invalue**| Value for the corresponding indicator string | - | Float, numpy arrays, pandas DataFrame or Series|
  |**outtype**| Indicator string for the desired output| - | String|
  |**unittype**| Option unit selector, default is Imp. Imp for imperial and SI for standard. | - | String|
  
