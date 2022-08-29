@@ -523,8 +523,8 @@ def psyplot(pressure=14.696, t_dry_bulb_start=20, t_dry_bulb_end=110, w_start=0,
     psych_chart(pressure, t_dry_bulb_start, t_dry_bulb_end, w_start, w_end, axis_labels, font_size)
 
 
-def psych_chart(pressure=14.696, t_dry_bulb_start=20, t_dry_bulb_end=110, w_start=0, w_end=0.025, axis_labels=False,
-                font_size=16, use_ax=None, line_width=0.75):
+def psych_chart(pressure=14.696, t_dry_bulb_start=20, t_dry_bulb_end=90, w_start=0, w_end=0.025, axis_labels=False,
+                font_size=16, use_ax=None, line_width=0.75, temperature_unit='Imp'):
     matplotlib.rcParams.update({'font.size': font_size})
     # initialize rh and wb structure
     if not use_ax:
@@ -536,7 +536,7 @@ def psych_chart(pressure=14.696, t_dry_bulb_start=20, t_dry_bulb_end=110, w_star
     for value in range(10, 101, 10):
         # RH lines
         temperature_range = Series(range(t_dry_bulb_start, t_dry_bulb_end + 1, 1))
-        rh_data = psych(pressure, 'Tdb', temperature_range, 'RH', value / 100, 'W')
+        rh_data = psych(pressure, 'Tdb', temperature_range, 'RH', value / 100, 'W', temperature_unit)
         px.plot(temperature_range.values, rh_data.values, c=color, linestyle='--', linewidth=line_width,
                 label='_nolegend_')
 
@@ -544,15 +544,21 @@ def psych_chart(pressure=14.696, t_dry_bulb_start=20, t_dry_bulb_end=110, w_star
         temperature_range = range(value, t_dry_bulb_end + 1, 1)
         wet_bulb_data = []
         for t_db in temperature_range:
-            wet_bulb_data.append(psych(pressure, 'Tdb', t_db, 'Twb', value, 'W'))
+            wet_bulb_data.append(psych(pressure, 'Tdb', t_db, 'Twb', value, 'W', temperature_unit))
         px.plot(temperature_range, wet_bulb_data, c=color, linestyle='--', linewidth=line_width,
                 label='_nolegend')
     px.ticklabel_format(axis='y', style='sci', scilimits=(1, 1))
     px.axis([t_dry_bulb_start, t_dry_bulb_end, w_start, w_end])
     px.yaxis.tick_right()
     if axis_labels:
-        plt.xlabel('Tdb ($^\circ$F)')
-        plt.ylabel('W (lb water / lb dry air)', rotation='vertical')
+        t_unit = 'F'
+        mass_unit = 'lb'
+        if temperature_unit == 'SI':
+            t_unit = 'C'
+            mass_unit = 'kg'
+
+        plt.xlabel(f'Tdb ($^\circ${t_unit})')
+        plt.ylabel(f'W ({mass_unit} water / {mass_unit} dry air)', rotation='vertical')
     px.yaxis.set_label_position('right')
 
 
